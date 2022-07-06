@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    <div class="container">
+        <div class="col-12">
+        <h1 class="mt-5 mb-5 d-flex justify-content-center">Code Challenge JS+</h1>
+        <form class="mt-5" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row d-flex justify-content-center">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="id_url">CSV or JSON url</label>
+                        <input class="form-control" name='url' type="url" placeholder="https://website.com/file.json" id="id_url">
+                    </div>
+                    <div class="row">
+                        <div class="mt-2 col-12 d-flex justify-content-end">
+                            <button class="btn btn-lg btn-primary" type="submit">Load</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4 d-flex justify-content-center">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="id_file">CSV or JSON File</label>
+                        <input class="form-control" name='file' type="file" placeholder="CSV File" id="id_file">
+                    </div>
+                    <div class="row">
+                        <div class="mt-2 col-12 d-flex justify-content-end">
+                            <button class="btn btn-lg btn-primary" type="submit">Upload</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4 d-flex justify-content-center">
+                    <div class="col-6">
+                        {% for message in messages %}
+                            <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+                                <span type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span></span>
+                                <strong>{{ message }}</strong>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </form>
+        </div>
+    </div>
+{% endblock main %}

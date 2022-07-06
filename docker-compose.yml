@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  db:
+    container_name: db
+    image: postgres:14.4
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./data/db:/var/lib/postgres/data
+  web:
+    container_name: ccjsm
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - '8000:8000'
+    depends_on:
+      - db
+      - migrate
+  migrate:
+    build: .
+    command: python manage.py migrate --noinput
+    depends_on:
+      - db
