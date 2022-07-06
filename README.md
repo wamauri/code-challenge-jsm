@@ -35,6 +35,10 @@ Foram desenvolvidos 36 tests unitários para garantir o funcionamento correto do
 ### Home
 Foi desenvolvido uma tela para carregamento tantos de links como arquivos json ou csv. Essa tela também possui validação para que apenas links e arquivos json ou csv sejam carregados.
 
+Links para carregamento:
+- [https://storage.googleapis.com/juntossomosmais-code-challenge/input-backend.csv](https://storage.googleapis.com/juntossomosmais-code-challenge/input-backend.csv)
+- [https://storage.googleapis.com/juntossomosmais-code-challenge/input-backend.json](https://storage.googleapis.com/juntossomosmais-code-challenge/input-backend.json)
+
 ![home](https://user-images.githubusercontent.com/67606510/177577979-14908239-729a-4d77-980b-0933b641029c.png)
 
 ### Painel de controle
