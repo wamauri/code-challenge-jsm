@@ -22,9 +22,3 @@ services:
       - '8000:8000'
     depends_on:
       - db
-      - migrate
-  migrate:
-    build: .
-    command: python manage.py migrate --noinput
-    depends_on:
-      - db

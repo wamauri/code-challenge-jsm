@@ -18,7 +18,11 @@ Utilize o Docker para carregar e depois disponibilizar todos os serviços necess
 ```
 $ docker-compose up
 ```
-Para que as migrations sejam aplicadas é necessário parar o servidor com um `Ctrl+c` e executar o comando `$ docker-compose up` novamente.
+Para que as migrations sejam aplicadas é necessário abrir um novo terminal e executar o seguinte comando com o sistema rodando.
+
+```
+docker exec -it ccjsm python manage.py migrate
+```
 
 ## Tests
 Todos os tests foram realizado utilizando a lib Coverage.py 
@@ -49,14 +53,8 @@ Foi utilizado o painel de administração do Django para acessar os objetos cria
 Para acessar esse painel é preciso criar um *superuser* com o seguinte comando em um novo terminal com o sistema rodando:
 
 ```
-$ docker exec -it container_id python manage.py createsuperuser
+$ docker exec -it ccjsm python manage.py createsuperuser
 ```
-
-Para saber o *container_id* basta executar o seguinte comando:
-```
-$ docker container ps
-```
-![container_id](https://user-images.githubusercontent.com/67606510/177587015-8fb2ccf7-6907-42c0-9aa8-ca37127dc0f2.png)
 
 ### Django Rest Framework
 A tela do DRF também pode ser utilizada para fazer as consultas se o usuário não possuir um API Client.
