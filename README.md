@@ -1,171 +1,93 @@
 
 # Code Challenge Juntos Somos+
 
-O objetivo desse code challenge é, mais do que seu currículo, formação e certificações, avaliarmos como você lida com esse desafio, quais ferramentas escolhe, a qualidade do seu código e a maneira de pensar nele.
+## Instruções
 
-A solução desse desafio é extremamente importante para entendermos os seus requisitos de qualidade, organização do seu código, performance, portabilidade, etc.
+Este repositório contém os arquivos necessários para executar o projeto utilizando o Docker. Antes de mais nada, será necessário instalar alguns pré-requisitos, se ainda não estiverem instalados:
 
-Sinta-se à vontade para escolher a tecnologia e ferramentas que achar necessário. Queremos ser surpreendidos pela sua abordagem no desafio!
+- Instale o [Docker](https://docs.docker.com/get-docker/)
 
-Temos apenas dois pré-requisitos: código testado e pronto para produção.
-
-Topa?
-
-# O desafio
-
-Recebemos insumos de clientes via arquivo CSV das empresas participantes todo mês, contudo, recebemos de alguns no formato JSON.
-
-Exemplo do CSV:
+Faça a cópia deste repositório em um diretório qualquer
 
 ```
-gender,name.title,name.first,name.last,location.street,location.city,location.state,location.postcode,location.coordinates.latitude,location.coordinates.longitude,location.timezone.offset,location.timezone.description,email,dob.date,dob.age,registered.date,registered.age,phone,cell,picture.large,picture.medium,picture.thumbnail
-male,mr,joselino,alves,2095 rua espirito santo ,são josé de ribamar,paraná,96895,-35.8687,-131.8801,-10:00,Hawaii,joselino.alves@example.com,1996-01-09T02:53:34Z,22,2014-02-09T19:19:32Z,4,(97) 0412-1519,(94) 6270-3362,https://randomuser.me/api/portraits/men/75.jpg,https://randomuser.me/api/portraits/med/men/75.jpg,https://randomuser.me/api/portraits/thumb/men/75.jpg
-```
-Exemplo do JSON:
-
-```
-{"gender":"male","name":{"title":"mr","first":"antonelo","last":"da conceição"},"location":{"street":"8986 rua rui barbosa ","city":"santo andré","state":"alagoas","postcode":40751,"coordinates":{"latitude":"-69.8704","longitude":"-165.9545"},"timezone":{"offset":"+1:00","description":"Brussels, Copenhagen, Madrid, Paris"}},"email":"antonelo.daconceição@example.com","dob":{"date":"1956-02-12T10:38:37Z","age":62},"registered":{"date":"2005-12-05T15:22:53Z","age":13},"phone":"(85) 8747-8125","cell":"(87) 2414-0993","picture":{"large":"https://randomuser.me/api/portraits/men/8.jpg","medium":"https://randomuser.me/api/portraits/med/men/8.jpg","thumbnail":"https://randomuser.me/api/portraits/thumb/men/8.jpg"}}
+$ git clone git@github.com:wamauri/code-challenge-jsm.git 
+$ cd code-challenge-jsm
 ```
 
-Precisamos aplicar nossa regra de negócio a fim de casar com necessidades internas da Juntos Somos+.
+Utilize o Docker para carregar e depois disponibilizar todos os serviços necessários ao funcionamento do projeto:
+```
+$ docker-compose up
+```
+Para que as migrations sejam aplicadas é necessário parar o servidor com um `Ctrl+c` e executar o comando `$ docker-compose up` novamente.
 
-## Regras de negócio que você precisa implementar
+## Tests
+Todos os tests foram realizado utilizando a lib Coverage.py 
+- Biblioteca [Coverage.py](https://coverage.readthedocs.io/en/6.4.1/)
 
-Costumamos trabalhar com os **clientes pelas 5 regiões do país**: 
+### Screenshots dos tests 
+Foram desenvolvidos 36 tests unitários para garantir o funcionamento correto do sistema.
 
-- Norte
-- Nordeste
-- Centro-Oeste
-- Sudeste
-- Sul
+![tests](https://user-images.githubusercontent.com/67606510/177577981-9b10974c-5c49-4eef-8c1e-18b900dcdd04.png)
 
-Como a concentração de consultores nossos é mais forte em alguns pontos, dependendo da localidade do cliente pode ficar mais fácil nosso time atendê-lo. Considere os pontos abaixo **(bounding box) para classificá-lo de acordo com os rótulos**:
+![tests_web](https://user-images.githubusercontent.com/67606510/177577982-754acfd8-cd8c-48a2-b8b3-6de4c769f09a.png)
 
-- **ESPECIAL**
+## Telas
+### Home
+Foi desenvolvido uma tela para carregamento tantos de links como arquivos json ou csv. Essa tela também possui validação para que apenas links e arquivos json ou csv sejam carregados.
+
+![home](https://user-images.githubusercontent.com/67606510/177577979-14908239-729a-4d77-980b-0933b641029c.png)
+
+### Painel de controle
+Foi utilizado o painel de administração do Django para acessar os objetos criados, não é necessário para o funcionamento do sistema. Foi apenas para acompanhar a criação dos objetos. 
+
+![django_admin](https://user-images.githubusercontent.com/67606510/177577960-82435896-a2e4-47d6-b4a7-2d38d963addf.png)
+
+Para acessar esse painel é preciso criar um *superuser* com o seguinte comando em um novo terminal com o sistema rodando:
 
 ```
-minlon: -2.196998
-minlat -46.361899
-maxlon: -15.411580
-maxlat: -34.276938
-```
-```
-minlon: -19.766959
-minlat -52.997614
-maxlon: -23.966413
-maxlat: -44.428305
+$ docker exec -it container_id python manage.py createsuperuser
 ```
 
-- **NORMAL**
+Para saber o *container_id* basta executar o seguinte comando:
+```
+$ docker container ps
+```
+![container_id](https://user-images.githubusercontent.com/67606510/177587015-8fb2ccf7-6907-42c0-9aa8-ca37127dc0f2.png)
+
+### Django Rest Framework
+A tela do DRF também pode ser utilizada para fazer as consultas se o usuário não possuir um API Client.
+
+![drf](https://user-images.githubusercontent.com/67606510/177577965-2f2974bf-0bd2-4d57-be38-5c02f20df041.png)
+
+## Endpoints
+Busca todos os cliente no banco de dados.
+```
+http://localhost:8000/api/v1/customers/
+```
+![endpoint_customers](https://user-images.githubusercontent.com/67606510/177577970-95ce2767-2fa6-4730-bdae-b788022354f7.png)
+
+Busca todos os registros no banco de dados, filtrando todos os clientes por região do Brasil e por tipo de cliente (no screenshot está sendo feita uma busca por todos os clientes da região norte e que sejam do tipo special).
+
+Regiões para consulta:
+- norte
+- nordeste
+- centro-oeste
+- sudeste
+- sul
 
 ```
-minlon: -26.155681
-minlat -54.777426
-maxlon: -34.016466
-maxlat: -46.603598
+http://localhost:8000/api/v1/customers/norte/special/
 ```
+![endpoint_customer_region_and_type](https://user-images.githubusercontent.com/67606510/177577967-6c426e21-01e8-4c9e-852a-74bd48e6c305.png)
 
-- **TRABALHOSO:** Qualquer outro usuário que não se encaixa nas regras acima.
-
-Outro ponto é que temos intenção de expandir os serviços para outros países, então **quanto mais genérico o cadastro, melhor**. Infelizmente os registros CSVs e JSONs não estão 100% prontos. Para melhorá-los, precisamos:
-
-1. Transformar os contatos telefônicos no formato [E.164](https://en.wikipedia.org/wiki/E.164). Exemplo: (86) 8370-9831 vira +558683709831.
-2. Inserir a nacionalidade. Como todos os clientes ainda são do brasil, o valor padrão será BR.
-3. Alterar o valor do campo `gender` para `F` ou `M` em vez de `female` ou `male`.
-4. Retirar o campo `age` de `dob` e `registered`.
-5. Alterar estrutura para simplificar leitura e usar arrays em campos específicos (ver exemplo abaixo)
-
-Exemplo de contrato de OUTPUT:
-
+Busca todos os clientes da região norte do Brasil
 ```
-{
-  "type": "laborious"
-  "gender": "m",
-  "name": {
-    "title": "mr",
-    "first": "quirilo",
-    "last": "nascimento"
-  },
-  "location": {
-    "region": "sul"
-    "street": "680 rua treze ",
-    "city": "varginha",
-    "state": "paraná",
-    "postcode": 37260,
-    "coordinates": {
-      "latitude": "-46.9519",
-      "longitude": "-57.4496"
-    },
-    "timezone": {
-      "offset": "+8:00",
-      "description": "Beijing, Perth, Singapore, Hong Kong"
-    }
-  },
-  "email": "quirilo.nascimento@example.com",
-  "birthday": "1979-01-22T03:35:31Z",
-  "registered": "2005-07-01T13:52:48Z",
-  "telephoneNumbers": [
-    "+556629637520"
-  ],
-  "mobileNumbers": [
-    "+553270684089"
-  ],
-  "picture": {
-    "large": "https://randomuser.me/api/portraits/men/83.jpg",
-    "medium": "https://randomuser.me/api/portraits/med/men/83.jpg",
-    "thumbnail": "https://randomuser.me/api/portraits/thumb/men/83.jpg"
-  },
-  "nationality": "BR"
-}
-
+http://localhost:8000/api/v1/customers/norte/
 ```
+![endpoint_region](https://user-images.githubusercontent.com/67606510/177577975-227a762e-0aeb-4d40-9e53-400e0af5f8b0.png)
 
-**Os dados devem ser armazenados conforme o contrato de OUTPUT também.**
-
-## Faça uma API
-
-Pense em uma API que dada a **região do usuário** e seu **tipo de classificação**, responda a **listagem dos elegíveis**. Não existe routing definido para a aplicação, fica a seu gosto.
-
-É **obrigatório** trabalhar com toda manipulação dos dados **em memória**. O carregamento dos dados de input deve ser por meio de request HTTP **ao subir a sua aplicação**, ou seja, antes do seu App estar `ready`, você fará um request para os links fornecidos abaixo.
-
-Além da lista dos usuários elegíveis, para permitir navegação entre os registros, **deve ser implementado** os seguintes metadados de paginação:
-
+Busca todos os clientes do tipo special
 ```
-  {
-    pageNumber: X,
-    pageSize: P,
-    totalCount: T,
-    users: [
-      ...
-    ]
-  }
+http://localhost:8000/api/v1/customers/special/
 ```
-
-Imagine que essa API seja possa ser acessada por consumidores específicos, então coloque o que mais achar necessário.
-
-Use como input os links abaixo (~1000 registros cada):
-
-- https://storage.googleapis.com/juntossomosmais-code-challenge/input-backend.csv
-- https://storage.googleapis.com/juntossomosmais-code-challenge/input-backend.json
-
-## Caso esteja pensando em full-stack
-
-Em [função do nosso layout base](layout-desktop.jpg), **fique a vontade para reformulá-lo** a fim de casar com os seguintes **requisitos obrigatórios**:
-  
-  - Uma tela de detalhe deve ser apresentada quando se clicar em um cliente;
-  - Navegação entre as fotos dos clientes;
-  - Filtros pela região e/ou classificação do cliente.
-
-Desenvolva da maneira que você achar melhor como mostrar os dados do usuário.
-
-Use a API feita por você pra lidar com os requisitos acima.
-
-Se a sua vaga for específica para front-end, veja [este outro desafio](https://github.com/juntossomosmais/frontend-challenge).
-
-# Como entregar
-
-Você deve disponibilizar seu código em algum serviço de hospedagem como Bitbucket, Gitlab ou Github e manter o repositório como privado.
-
-É obrigatório ter um **README** com todas as instruções sobre o seu desafio.
-
-Assim que finalizar, nos avise pelo e-mail vagas-dev@juntossomosmais.com.br para enviarmos os usuários que devem ter acesso para avaliação.
+![endpoint_customer_type](https://user-images.githubusercontent.com/67606510/177577973-a2484def-6a3e-4ad2-ae6b-16b72e5beb87.png)
